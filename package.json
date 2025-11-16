@@ -1,0 +1,32 @@
+{
+  "name": "mern_skeleton",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "author": "Daylin Sisniega",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "^5.1.0",
+    "express-jwt": "^8.5.1",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "loadash": "^1.0.0",
+    "mongoose": "^8.18.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.4",
+    "@babel/preset-env": "^7.28.3",
+    "babel-loader": "^10.0.0",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.10"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  }
+}
