@@ -1,4 +1,3 @@
-
 // import express from "express";
 // import mongoose from "mongoose";
 // import config from "./config/config.js";
@@ -17,14 +16,25 @@
 // app.use(express.json());
 // app.use(cookieParser());
 
-// // CORS: permitir peticiones desde Vite (5173)
+
+
+// const allowedOrigins = [
+//   "http://localhost:5173",                // Vite local
+//   "https://portfolio0212.netlify.app",    // tu frontend en producción
+// ];
+
 // app.use(
 //   cors({
-//     origin: "http://localhost:5173",
+//     origin: function (origin, callback) {
+//       if (!origin) return callback(null, true); // permite Thunder Client / Insomnia
+//       if (allowedOrigins.includes(origin)) {
+//         return callback(null, true);
+//       }
+//       return callback(new Error("Not allowed by CORS"));
+//     },
 //     credentials: true,
 //   })
 // );
-// //  NO uses: app.options("*", cors());  ← esto causaba el crash
 
 // // Conexión MongoDB
 // mongoose
@@ -55,7 +65,7 @@ import express from "express";
 import mongoose from "mongoose";
 import config from "./config/config.js";
 import cors from "cors";
-import cookieParser from "cookie-parser"; // ← leer cookies
+import cookieParser from "cookie-parser";
 
 // Importar rutas
 import contactRoutes from "./server/routes/contact.routes.js";
@@ -69,22 +79,13 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 
-
-
-const allowedOrigins = [
-  "http://localhost:5173",                // Vite local
-  "https://portfolio0212.netlify.app",    // tu frontend en producción
-];
-
+// CORS: permitir Vite local y Netlify
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin) return callback(null, true); // permite Thunder Client / Insomnia
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error("Not allowed by CORS"));
-    },
+    origin: [
+      "http://localhost:5173",
+      "https://portfolio0212.netlify.app"
+    ],
     credentials: true,
   })
 );
