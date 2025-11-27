@@ -27,33 +27,34 @@ export default function Project() {
   const [projects, setProjects] = useState(baseProjects);
   const [form, setForm] = useState({ title: "", description: "", image: "", link: "" });
 useEffect(() => {
-    async function fetchProjects() {
-      try {
-        const res = await fetch(`${API}/api/projects`);
-        if (!res.ok) {
-          console.error("Error al cargar proyectos del backend:", res.status);
-          return;
-        }
+  // si NO es admin, no cargamos proyectos del backend
+  if (!isAdmin) return;
 
-        const data = await res.json();
-        // Los convertimos al formato que usa tu front (id, title, description, image, link)
-        const backendProjects = data.map((p) => ({
-          id: p._id,
-          title: p.title,
-          description: p.description,
-          image: p.image || "",
-          link: p.link || "",
-        }));
-
-        // Añadimos los del backend a los que ya tienes hardcodeados
-        setProjects((prev) => [...prev, ...backendProjects]);
-      } catch (err) {
-        console.error("Error cargando proyectos del backend", err);
+  async function fetchProjects() {
+    try {
+      const res = await fetch(`${API}/api/projects`);
+      if (!res.ok) {
+        console.error("Error al cargar proyectos del backend:", res.status);
+        return;
       }
-    }
 
-    fetchProjects();
-  }, []);
+      const data = await res.json();
+      const backendProjects = data.map((p) => ({
+        id: p._id,
+        title: p.title,
+        description: p.description,
+        image: p.image || "",
+        link: p.link || "",
+      }));
+
+      setProjects((prev) => [...prev, ...backendProjects]);
+    } catch (err) {
+      console.error("Error cargando proyectos del backend", err);
+    }
+  }
+
+  fetchProjects();
+}, [isAdmin]);
 
   //  NUEVO: id del proyecto que estamos editando (null = creando uno nuevo)
   const [editingId, setEditingId] = useState(null);
