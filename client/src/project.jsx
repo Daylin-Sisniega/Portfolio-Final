@@ -1,5 +1,6 @@
-import { useState } from "react";
-import auth from "./auth/auth-helper.js";   // 🔹 AJUSTE DE RUTA
+import { useState, useEffect } from "react";
+import auth from "./auth/auth-helper.js";   // AJUSTE DE RUTA
+const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 const baseProjects = [
   {
@@ -19,14 +20,42 @@ const baseProjects = [
 ];
 
 export default function Project() {
-  // 🔹 Leer role del usuario logueado
+  // Leer role del usuario logueado
   const jwt = auth.isAuthenticated();
   const isAdmin = jwt && jwt.user && jwt.user.role === "admin";
 
   const [projects, setProjects] = useState(baseProjects);
   const [form, setForm] = useState({ title: "", description: "", image: "", link: "" });
+useEffect(() => {
+    async function fetchProjects() {
+      try {
+        const res = await fetch(`${API}/api/projects`);
+        if (!res.ok) {
+          console.error("Error al cargar proyectos del backend:", res.status);
+          return;
+        }
 
-  // 🔹 NUEVO: id del proyecto que estamos editando (null = creando uno nuevo)
+        const data = await res.json();
+        // Los convertimos al formato que usa tu front (id, title, description, image, link)
+        const backendProjects = data.map((p) => ({
+          id: p._id,
+          title: p.title,
+          description: p.description,
+          image: p.image || "",
+          link: p.link || "",
+        }));
+
+        // Añadimos los del backend a los que ya tienes hardcodeados
+        setProjects((prev) => [...prev, ...backendProjects]);
+      } catch (err) {
+        console.error("Error cargando proyectos del backend", err);
+      }
+    }
+
+    fetchProjects();
+  }, []);
+
+  //  NUEVO: id del proyecto que estamos editando (null = creando uno nuevo)
   const [editingId, setEditingId] = useState(null);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,14 +65,14 @@ export default function Project() {
     if (!isAdmin) return; // seguridad extra
 
     if (editingId) {
-      // 🔹 UPDATE
+      // UPDATE
       const updated = projects.map((pr) =>
         pr.id === editingId ? { ...pr, ...form } : pr
       );
       setProjects(updated);
       setEditingId(null); // salir del modo edición
     } else {
-      // 🔹 CREATE (lo que ya hacías)
+      //  CREATE (lo que ya hacías)
       const newProject = { ...form, id: 'p' + Date.now() };
       setProjects((p) => [...p, newProject]);
     }
@@ -56,7 +85,7 @@ export default function Project() {
     setProjects(p => p.filter(x => x.id !== id));
   };
 
-  // 🔹 NUEVO: cargar proyecto al formulario para editar
+  // NUEVO: cargar proyecto al formulario para editar
   const startEdit = (project) => {
     if (!isAdmin) return;
     setEditingId(project.id);
