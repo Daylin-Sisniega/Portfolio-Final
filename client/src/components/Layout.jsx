@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import auth from "../auth/auth-helper";
 
-// 🔹 NUEVO: base URL para backend (local o Render)
+// NUEVO: base URL para backend (local o Render)
 const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
 export default function Layout() {
@@ -21,7 +21,7 @@ export default function Layout() {
 
   async function onSignout() {
     try {
-      // 🔹 CAMBIADO: antes estaba fijo "http://localhost:3000"
+      //  CAMBIADO: antes estaba fijo "http://localhost:3000"
       await fetch(`${API}/auth/signout`);
     } catch {}
     auth.clearJWT(() => {
