@@ -102,6 +102,18 @@ export default function Home() {
         Strong troubleshooting and debugging abilities applied in academic
         and professional projects.
       </p>
+       <p
+        style={{
+          maxWidth: "700px",
+          lineHeight: "1.6",
+          marginBottom: "30px",
+          color: "#e0aaff",
+          fontWeight: "bold",
+        }}
+      >
+        This paragraph was added to demonstrate the CI/CD pipeline:
+        update code → push to GitHub → automatic deploy.
+      </p>
       <div>
         {/* Botón que redirige a About */}
         <Link to="/about">
