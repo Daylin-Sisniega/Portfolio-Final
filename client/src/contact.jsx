@@ -1,7 +1,6 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import auth from "./auth/auth-helper.js";   //  NUEVO
+import auth from "./auth/auth-helper.js";   // 🔹 NUEVO
 import {
   FaPhone,
   FaWhatsapp,
@@ -10,6 +9,7 @@ import {
   FaMapMarkerAlt,
   FaGithub,
 } from "react-icons/fa";
+
 
 const API = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000";
 
@@ -101,7 +101,7 @@ export default function Contact() {
         setMsg("Contact updated successfully!");
         setEditingId(null);
       } else {
-        // 🔹 CREATE local
+        //  CREATE local
         setContacts((prev) => [...prev, data]);
         setMsg("Thanks for your message!");
       }
@@ -120,7 +120,7 @@ export default function Contact() {
     }
   };
 
-  // 🔹 cargar contacto en el form para editar
+  // cargar contacto en el form para editar
   const handleEdit = (contact) => {
     if (!isAdmin) return;
     setEditingId(contact._id);
@@ -134,7 +134,7 @@ export default function Contact() {
     setMsg("Editing contact...");
   };
 
-  // 🔹 borrar contacto
+  // borrar contacto
   const handleDelete = async (id) => {
     if (!isAdmin) return;
 

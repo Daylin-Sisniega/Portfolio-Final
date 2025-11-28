@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import auth from "./auth/auth-helper.js";   // 🔹 NUEVO
+import auth from "./auth/auth-helper.js";   // NUEVO
 
 // Colores que combinan con tu Project:
 const ACCENT = "#e0aaff";   // títulos
@@ -33,7 +32,7 @@ export default function Education() {
     logo: "",
   });
 
-  // 🔹 NUEVO: id que estamos editando (null = creando)
+  // NUEVO: id que estamos editando (null = creando)
   const [editingId, setEditingId] = useState(null);
 
   const onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
@@ -43,14 +42,14 @@ export default function Education() {
     if (!isAdmin) return;
 
     if (editingId) {
-      // 🔹 UPDATE
+      // UPDATE
       const updated = items.map((it) =>
         it.id === editingId ? { ...it, ...form } : it
       );
       setItems(updated);
       setEditingId(null); // salimos del modo edición
     } else {
-      // 🔹 CREATE
+      // CREATE
       const newItem = { ...form, id: "e" + Date.now() };
       setItems((arr) => [...arr, newItem]);
     }
@@ -69,7 +68,7 @@ export default function Education() {
     setItems((arr) => arr.filter((x) => x.id !== id));
   };
 
-  // 🔹 NUEVO: cargar datos en el form para editar
+  // NUEVO: cargar datos en el form para editar
   const startEdit = (item) => {
     if (!isAdmin) return;
     setEditingId(item.id);
